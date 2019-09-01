@@ -573,7 +573,7 @@ zshz() {
   }
 
   if [[ ${@: -1} == /* ]] && (( ! $+opts[-e] )) && (( ! $+opts[-l] )); then
-    [[ -d ${@: -1} ]] && builtin cd ${@: -1} && return
+    [[ -d ${@: -1} ]] && cd ${@: -1} && return
   fi
 
   # With option -c, make sure query string matches beginning of matches;
@@ -593,7 +593,7 @@ zshz() {
     if (( $+opts[-e] )); then               # echo
       print -- "$cd"
     else
-      builtin cd "$cd"
+      cd "$cd"
     fi
   else
     return $ret2
