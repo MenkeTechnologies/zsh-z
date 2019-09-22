@@ -577,7 +577,7 @@ zshz() {
 
   # With option -c, make sure query string matches beginning of matches;
   # otherwise look for matches anywhere in paths
-  if (( $+ops[-c] )); then
+  if test -n "$ops" && (( $+ops[-c] )); then
     _zshz_find_matches "$fnd*" $method $output_format
   else
     _zshz_find_matches "*$fnd*" $method $output_format
