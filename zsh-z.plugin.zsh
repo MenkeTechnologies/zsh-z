@@ -438,8 +438,8 @@ _zshz_find_matches() {
   [[ -h $datafile ]] && datafile=${datafile:A}
 
   # Bail if we don't own the datafile and $ZSHZ_OWNER is not set
-  [[ -z ${ZSHZ_OWNER:-${_Z_OWNER}} ]] && [[ -f $datafile ]] \
-    && [[ ! -O $datafile ]] && return
+  #[[ -z ${ZSHZ_OWNER:-${_Z_OWNER}} ]] && [[ -f $datafile ]] \
+    #&& [[ ! -O $datafile ]] && return
 
   # If there is no datafile yet
   # https://github.com/rupa/z/pull/256
