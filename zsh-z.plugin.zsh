@@ -325,23 +325,21 @@ _zshz_remove_path() {
 #   $1 Name of associative array of matches and ranks
 ############################################################
 _zshz_find_common_root() {
-  local -A common_matches
+  local -a common_matches
   local x short
 
-  common_matches=( ${(Pkv)1} )
+  common_matches=( ${(Pk)1[@]} )
 
-  for x in ${(k)common_matches}; do
-    if (( common_matches[$x] )); then
-      if [[ -z $short ]] || (( $#x < $#short )); then
-        short=$x
-      fi
+  for x in ${common_matches[@]}; do
+    if [[ -z $short ]] || (( $#x < $#short )); then
+      short=$x
     fi
   done
 
   [[ $short == '/' ]] && return
 
-  for x in ${(k)common_matches}; do
-    (( common_matches[$x] )) && [[ $x != $short* ]] && return
+  for x in ${common_matches[@]}; do
+    [[ $x != $short* ]] && return
   done
 
   print -z -- $short
@@ -576,9 +574,8 @@ zshz() {
     [[ -d ${@: -1} ]] && cd ${@: -1} && return
   fi
 
-  # With option -c, make sure query string matches beginning of matches;
-  # otherwise look for matches anywhere in paths
-  if test -n "$ops" && (( $+ops[-c] )); then
+  # zpm-zsh/colors has a global $c, so we'll avoid math expressions here
+  if [[ ! -z ${(tP)opts[-c]} ]]; then
     _zshz_find_matches "$fnd*" $method $output_format
   else
     _zshz_find_matches "*$fnd*" $method $output_format
