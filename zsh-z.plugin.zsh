@@ -597,7 +597,7 @@ zshz() {
   fi
 }
 
-alias ${ZSHZ_CMD:-${_Z_CMD:-z}}='zshz 2>&1'
+#alias ${ZSHZ_CMD:-${_Z_CMD:-z}}='zshz 2>&1'
 
 ############################################################
 # precmd and chpwd
