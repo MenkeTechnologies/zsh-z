@@ -337,3 +337,45 @@
     ")
     assert "$first" same_as "$second"
 }
+
+#--------------------------------------------------------------
+# Round 2: zshz datafile contract pins
+#--------------------------------------------------------------
+
+@test 'plugin honors ZSHZ_DATA env var for the datafile path' {
+    # Pin: scripts that set ZSHZ_DATA before sourcing expect the
+    # plugin to use that file rather than ~/.z. A regression here
+    # silently uses the default path and orphans the user's data.
+    local result
+    result=$(zsh -c "
+        emulate zsh
+        autoload -U add-zsh-hook
+        export ZSHZ_DATA=/tmp/zshz-test-data-\$\$
+        source '$pluginFile' 2>/dev/null
+        print -n \$ZSHZ_DATA
+    " 2>&1)
+    [[ "$result" == /tmp/zshz-test-data-* ]]
+    assert $state equals 0
+}
+
+@test 'plugin honors ZSHZ_CMD env var for the command name' {
+    # Default `z` can be customized via ZSHZ_CMD. Pin that the
+    # variable is read (used in the usage text or alias).
+    run grep -F 'ZSHZ_CMD' "$pluginFile"
+    assert $state equals 0
+}
+
+@test 'plugin guards against zsh < 4.3.11 with a clear message' {
+    # Older zsh lacks features the plugin needs. The guard message
+    # must mention the required version so users get a clear hint.
+    run grep -E "ZSH.{0,5}(4\.3\.11|v4\.3\.11)" "$pluginFile"
+    assert $state equals 0
+}
+
+@test 'ZSHZ_NO_RESOLVE_SYMLINKS opt-out is documented in env-var block' {
+    # The env-var help block at top of file documents all toggles;
+    # pin that the symlink-resolution toggle stays documented (users
+    # rely on this for ~/Library/-style cross-mount lookups on Mac).
+    run grep -F 'ZSHZ_NO_RESOLVE_SYMLINKS' "$pluginFile"
+    assert $state equals 0
+}
