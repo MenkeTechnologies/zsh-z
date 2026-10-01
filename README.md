@@ -160,10 +160,10 @@ to install `zsh-z`.
 
 ZSH-z has environment variables (they all begin with `ZSHZ_`) that change its behavior if you set them; you can also keep your old ones if you have been using `rupa/z` (they begin with `_Z_`).
 
-* `ZSHZ_CMD` changes the command name (default: `z`)
+* `ZSHZ_CMD` changes the command name shown in the help text (default: `z`). This fork does not define the `z` alias; call `zshz` directly or define your own alias, e.g. `alias z='zshz 2>&1'`
 * `ZSHZ_COMPLETION` can be `'frecent'` (default) or `'legacy'`, depending on whether you want your completion results sorted according to frecency or simply sorted alphabetically
 * `ZSHZ_DATA` changes the database file (default: `~/.z`)
-* `ZSHZ_DEBUG` (default: unset) — when truthy, surfaces `zsystem flock` errors and enables `WARN_CREATE_GLOBAL`/function-name sanity checks for debugging
+* `ZSHZ_DEBUG` (default: unset) — when truthy, surfaces `zsystem flock` errors and enables `WARN_CREATE_GLOBAL` in `zshz`/`_zshz` and, on zsh 5.4+, `functions -W` (`WARN_NESTED_VAR`) on the zsh-z functions
 * `ZSHZ_EXCLUDE_DIRS` is an array of directories to keep out of the database (default: empty)
 * `ZSHZ_MAX_SCORE` is the maximum combined score the database entries can have before they begin to age and potentially drop out of the database (default: 9000)
 * `ZSHZ_NO_RESOLVE_SYMLINKS` prevents symlink resolution (default: `0`)
